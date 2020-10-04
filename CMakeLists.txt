@@ -69,7 +69,8 @@ set(HTS_SOURCES_TVHEADEND_UTILITIES
                 src/tvheadend/utilities/LifetimeMapper.h
                 src/tvheadend/utilities/AsyncState.cpp
                 src/tvheadend/utilities/AsyncState.h
-                src/tvheadend/utilities/SyncedBuffer.h)
+                src/tvheadend/utilities/SyncedBuffer.h
+                src/tvheadend/utilities/TCPSocket.h)
 
 source_group("Source Files" FILES ${HTS_SOURCES})
 source_group("Source Files\\tvheadend" FILES ${HTS_SOURCES_TVHEADEND})
@@ -98,9 +99,6 @@ list(APPEND HTS_SOURCES
 add_subdirectory(lib/libhts)
 
 set(DEPLIBS ${p8-platform_LIBRARIES} hts)
-if(WIN32)
-  list(APPEND DEPLIBS ws2_32)
-endif()
 
 build_addon(pvr.hts HTS DEPLIBS)
 
