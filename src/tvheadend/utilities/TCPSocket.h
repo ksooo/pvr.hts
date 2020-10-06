@@ -49,10 +49,10 @@ public:
 
   void Close() { m_socket.close(); }
 
-  ssize_t Read(void* data, size_t len, uint64_t iTimeoutMs = 0)
+  int64_t Read(void* data, size_t len, uint64_t iTimeoutMs = 0)
   {
     std::error_code error;
-    ssize_t n = -1;
+    int64_t n = -1;
     asio::async_read(
         m_socket, asio::buffer(data, len),
         asio::bind_executor(m_read, [&](const std::error_code& result_error, std::size_t result_n) {
@@ -69,10 +69,10 @@ public:
     return !error ? n : -1;
   }
 
-  ssize_t Write(void* data, size_t len, uint64_t iTimeoutMs)
+  int64_t Write(void* data, size_t len, uint64_t iTimeoutMs)
   {
     std::error_code error;
-    ssize_t n = -1;
+    int64_t n = -1;
     asio::async_write(m_socket, asio::buffer(data, len),
                       asio::bind_executor(
                           m_write, [&](const std::error_code& result_error, std::size_t result_n) {

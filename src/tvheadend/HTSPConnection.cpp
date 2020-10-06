@@ -283,7 +283,7 @@ bool HTSPConnection::ReadMessage()
   size_t cnt = 0;
   while (cnt < len)
   {
-    ssize_t r = m_socket->Read(buf + cnt, len - cnt, Settings::GetInstance().GetResponseTimeout());
+    int64_t r = m_socket->Read(buf + cnt, len - cnt, Settings::GetInstance().GetResponseTimeout());
     if (r < 0)
     {
       Logger::Log(LogLevel::LEVEL_ERROR, "failed to read packet from socket");
@@ -360,10 +360,10 @@ bool HTSPConnection::SendMessage0(const char* method, htsmsg_t* msg)
     return false;
 
   /* Send data */
-  ssize_t c = m_socket->Write(buf, len, Settings::GetInstance().GetResponseTimeout());
+  int64_t c = m_socket->Write(buf, len, Settings::GetInstance().GetResponseTimeout());
   free(buf);
 
-  if (c != static_cast<ssize_t>(len))
+  if (c != static_cast<int64_t>(len))
   {
     Logger::Log(LogLevel::LEVEL_ERROR, "Command %s failed: failed to write to socket", method);
     if (!m_suspended)
