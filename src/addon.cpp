@@ -14,6 +14,10 @@
 using namespace tvheadend;
 using namespace tvheadend::utilities;
 
+CHTSAddon::CHTSAddon() : m_settings(new Settings())
+{
+}
+
 ADDON_STATUS CHTSAddon::Create()
 {
   /* Configure the logger */
@@ -41,15 +45,15 @@ ADDON_STATUS CHTSAddon::Create()
     }
 
     /* Don't log trace messages unless told so */
-    if (level == LogLevel::LEVEL_TRACE && !Settings::GetInstance().GetTraceDebug())
-      return;
+    //    if (level == LogLevel::LEVEL_TRACE && !Settings::GetInstance().GetTraceDebug())
+    //      return;
 
     kodi::Log(addonLevel, "%s", message);
   });
 
   Logger::Log(LogLevel::LEVEL_INFO, "starting PVR client");
 
-  Settings::GetInstance().ReadSettings();
+  m_settings->ReadSettings();
 
   return ADDON_STATUS_OK;
 }
@@ -58,7 +62,7 @@ ADDON_STATUS CHTSAddon::SetSetting(const std::string& settingName,
                                    const kodi::CSettingValue& settingValue)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex);
-  return Settings::GetInstance().SetSetting(settingName, settingValue);
+  return m_settings->SetSetting(settingName, settingValue);
 }
 
 ADDON_STATUS CHTSAddon::CreateInstance(int instanceType,
@@ -73,8 +77,7 @@ ADDON_STATUS CHTSAddon::CreateInstance(int instanceType,
   {
     Logger::Log(LogLevel::LEVEL_DEBUG, "%s: Creating PVR-Client instance", __FUNCTION__);
 
-    /* Connect to ARGUS TV */
-    CTvheadend* client = new CTvheadend(instance, version);
+    CTvheadend* client = new CTvheadend(instance, version, m_settings);
     client->Start();
     addonInstance = client;
 

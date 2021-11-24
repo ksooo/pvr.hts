@@ -9,12 +9,18 @@
 
 #include "kodi/AddonBase.h"
 
+#include <memory>
 #include <mutex>
+
+namespace tvheadend
+{
+class Settings;
+}
 
 class ATTRIBUTE_HIDDEN CHTSAddon : public kodi::addon::CAddonBase
 {
 public:
-  CHTSAddon() = default;
+  CHTSAddon();
 
   ADDON_STATUS Create() override;
   ADDON_STATUS SetSetting(const std::string& settingName,
@@ -27,4 +33,5 @@ public:
 
 private:
   std::recursive_mutex m_mutex;
+  std::shared_ptr<tvheadend::Settings> m_settings;
 };
