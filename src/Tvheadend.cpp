@@ -28,11 +28,11 @@ using namespace tvheadend;
 using namespace tvheadend::entity;
 using namespace tvheadend::utilities;
 
-CTvheadend::CTvheadend(KODI_HANDLE instance,
-                       const std::string& kodiVersion,
-                       const std::shared_ptr<tvheadend::Settings>& settings)
+CTvheadend::CTvheadend(const std::string& instanceID,
+                       KODI_HANDLE instance,
+                       const std::string& kodiVersion)
   : kodi::addon::CInstancePVRClient(instance, kodiVersion),
-    m_settings(settings),
+    m_settings(new Settings(instanceID)),
     m_conn(new HTSPConnection(m_settings, *this)),
     m_streamchange(false),
     m_vfs(new HTSPVFS(m_settings, *m_conn)),
@@ -44,6 +44,8 @@ CTvheadend::CTvheadend(KODI_HANDLE instance,
     m_playingLiveStream(false),
     m_playingRecording(nullptr)
 {
+  m_settings->ReadSettings();
+
   for (int i = 0; i < 1 || i < m_settings->GetTotalTuners(); i++)
   {
     m_dmx.emplace_back(new HTSPDemuxer(m_settings, *this, *m_conn));

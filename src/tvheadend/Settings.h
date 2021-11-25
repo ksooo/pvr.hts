@@ -51,8 +51,11 @@ public:
   static const int DEFAULT_STREAM_CHUNKSIZE; // KB
   static const bool DEFAULT_DVR_IGNORE_DUPLICATE_SCHEDULES;
 
-  Settings()
-    : m_strHostname(DEFAULT_HOST),
+  Settings() = delete;
+
+  explicit Settings(const std::string& instanceID)
+    : m_instanceID(instanceID),
+      m_strHostname(DEFAULT_HOST),
       m_iPortHTSP(DEFAULT_HTTP_PORT),
       m_iPortHTTP(DEFAULT_HTSP_PORT),
       m_bUseHTTPS(DEFAULT_USE_HTTPS),
@@ -154,9 +157,9 @@ private:
   /**
    * Read/Set values according to definition in settings.xml
    */
-  static std::string ReadStringSetting(const std::string& key, const std::string& def);
-  static int ReadIntSetting(const std::string& key, int def);
-  static bool ReadBoolSetting(const std::string& key, bool def);
+  std::string ReadStringSetting(const std::string& key, const std::string& def);
+  int ReadIntSetting(const std::string& key, int def);
+  bool ReadBoolSetting(const std::string& key, bool def);
 
   // @return ADDON_STATUS_OK if value has not changed, ADDON_STATUS_NEED_RESTART otherwise
   static ADDON_STATUS SetStringSetting(const std::string& oldValue,
@@ -164,6 +167,7 @@ private:
   static ADDON_STATUS SetIntSetting(int oldValue, const kodi::CSettingValue& newValue);
   static ADDON_STATUS SetBoolSetting(bool oldValue, const kodi::CSettingValue& newValue);
 
+  std::string m_instanceID;
   std::string m_strHostname;
   int m_iPortHTSP;
   int m_iPortHTTP;

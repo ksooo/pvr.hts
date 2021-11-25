@@ -10,6 +10,7 @@
 #include "utilities/Logger.h"
 
 #include "kodi/General.h"
+#include "kodi/tools/StringUtils.h"
 
 using namespace tvheadend;
 using namespace tvheadend::utilities;
@@ -183,8 +184,9 @@ ADDON_STATUS Settings::SetSetting(const std::string& key, const kodi::CSettingVa
 
 std::string Settings::ReadStringSetting(const std::string& key, const std::string& def)
 {
+  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   std::string value;
-  if (kodi::CheckSettingString(key, value))
+  if (kodi::CheckSettingString(instanceKey, value))
     return value;
 
   return def;
@@ -192,8 +194,9 @@ std::string Settings::ReadStringSetting(const std::string& key, const std::strin
 
 int Settings::ReadIntSetting(const std::string& key, int def)
 {
+  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   int value;
-  if (kodi::CheckSettingInt(key, value))
+  if (kodi::CheckSettingInt(instanceKey, value))
     return value;
 
   return def;
@@ -201,8 +204,9 @@ int Settings::ReadIntSetting(const std::string& key, int def)
 
 bool Settings::ReadBoolSetting(const std::string& key, bool def)
 {
+  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   bool value;
-  if (kodi::CheckSettingBoolean(key, value))
+  if (kodi::CheckSettingBoolean(instanceKey, value))
     return value;
 
   return def;
