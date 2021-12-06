@@ -19,11 +19,8 @@ public:
   ADDON_STATUS Create() override;
   ADDON_STATUS SetSetting(const std::string& settingName,
                           const kodi::CSettingValue& settingValue) override;
-  ADDON_STATUS CreateInstance(int instanceType,
-                              const std::string& instanceID,
-                              KODI_HANDLE instance,
-                              const std::string& version,
-                              KODI_HANDLE& addonInstance) override;
+  ADDON_STATUS CreateInstance(const kodi::addon::IInstanceInfo& instance,
+                              KODI_ADDON_INSTANCE_HDL& hdl) override;
 
 private:
   std::recursive_mutex m_mutex;

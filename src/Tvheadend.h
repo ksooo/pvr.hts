@@ -62,11 +62,14 @@ class ATTRIBUTE_HIDDEN CTvheadend : public kodi::addon::CInstancePVRClient,
                                     public tvheadend::IHTSPDemuxPacketHandler
 {
 public:
-  CTvheadend(const std::string& instanceID, KODI_HANDLE instance, const std::string& kodiVersion);
+  CTvheadend(const kodi::addon::IInstanceInfo& instance);
   ~CTvheadend() override;
 
   void Start();
   void Stop();
+
+  ADDON_STATUS SetInstanceSetting(const std::string& settingName,
+                                  const kodi::CSettingValue& settingValue) override;
 
   // IHTSPConnectionListener implementation
   void Disconnected() override;

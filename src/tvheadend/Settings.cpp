@@ -184,9 +184,8 @@ ADDON_STATUS Settings::SetSetting(const std::string& key, const kodi::CSettingVa
 
 std::string Settings::ReadStringSetting(const std::string& key, const std::string& def)
 {
-  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   std::string value;
-  if (kodi::CheckSettingString(instanceKey, value))
+  if (m_instance.CheckInstanceSettingString(key, value))
     return value;
 
   return def;
@@ -194,9 +193,8 @@ std::string Settings::ReadStringSetting(const std::string& key, const std::strin
 
 int Settings::ReadIntSetting(const std::string& key, int def)
 {
-  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   int value;
-  if (kodi::CheckSettingInt(instanceKey, value))
+  if (m_instance.CheckInstanceSettingInt(key, value))
     return value;
 
   return def;
@@ -204,9 +202,8 @@ int Settings::ReadIntSetting(const std::string& key, int def)
 
 bool Settings::ReadBoolSetting(const std::string& key, bool def)
 {
-  const std::string instanceKey = m_instanceID.empty() ? key : m_instanceID + "::" + key;
   bool value;
-  if (kodi::CheckSettingBoolean(instanceKey, value))
+  if (m_instance.CheckInstanceSettingBoolean(key, value))
     return value;
 
   return def;

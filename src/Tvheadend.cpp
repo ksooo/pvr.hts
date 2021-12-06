@@ -28,11 +28,9 @@ using namespace tvheadend;
 using namespace tvheadend::entity;
 using namespace tvheadend::utilities;
 
-CTvheadend::CTvheadend(const std::string& instanceID,
-                       KODI_HANDLE instance,
-                       const std::string& kodiVersion)
-  : kodi::addon::CInstancePVRClient(instance, kodiVersion),
-    m_settings(new Settings(instanceID)),
+CTvheadend::CTvheadend(const kodi::addon::IInstanceInfo& instance)
+  : kodi::addon::CInstancePVRClient(instance),
+    m_settings(new Settings(*this)),
     m_conn(new HTSPConnection(m_settings, *this)),
     m_streamchange(false),
     m_vfs(new HTSPVFS(m_settings, *m_conn)),
@@ -77,6 +75,12 @@ void CTvheadend::Stop()
 
   m_conn->Stop();
   StopThread();
+}
+
+ADDON_STATUS CTvheadend::SetInstanceSetting(const std::string& settingName,
+                                            const kodi::CSettingValue& settingValue)
+{
+  return m_settings->SetSetting(settingName, settingValue);
 }
 
 /* **************************************************************************

@@ -53,8 +53,8 @@ public:
 
   Settings() = delete;
 
-  explicit Settings(const std::string& instanceID)
-    : m_instanceID(instanceID),
+  explicit Settings(kodi::addon::IAddonInstance& instance)
+    : m_instance(instance),
       m_strHostname(DEFAULT_HOST),
       m_iPortHTSP(DEFAULT_HTTP_PORT),
       m_iPortHTTP(DEFAULT_HTSP_PORT),
@@ -167,7 +167,7 @@ private:
   static ADDON_STATUS SetIntSetting(int oldValue, const kodi::CSettingValue& newValue);
   static ADDON_STATUS SetBoolSetting(bool oldValue, const kodi::CSettingValue& newValue);
 
-  std::string m_instanceID;
+  kodi::addon::IAddonInstance& m_instance;
   std::string m_strHostname;
   int m_iPortHTSP;
   int m_iPortHTTP;

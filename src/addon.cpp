@@ -60,21 +60,18 @@ ADDON_STATUS CHTSAddon::SetSetting(const std::string& settingName,
   return ADDON_STATUS_OK;
 }
 
-ADDON_STATUS CHTSAddon::CreateInstance(int instanceType,
-                                       const std::string& instanceID,
-                                       KODI_HANDLE instance,
-                                       const std::string& version,
-                                       KODI_HANDLE& addonInstance)
+ADDON_STATUS CHTSAddon::CreateInstance(const kodi::addon::IInstanceInfo& instance,
+                                       KODI_ADDON_INSTANCE_HDL& hdl)
 {
   std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
-  if (instanceType == ADDON_INSTANCE_PVR)
+  if (instance.IsType(ADDON_INSTANCE_PVR))
   {
     Logger::Log(LogLevel::LEVEL_DEBUG, "%s: Creating PVR-Client instance", __FUNCTION__);
 
-    CTvheadend* client = new CTvheadend(instanceID, instance, version);
+    CTvheadend* client = new CTvheadend(instance);
     client->Start();
-    addonInstance = client;
+    hdl = client;
 
     return ADDON_STATUS_OK;
   }
