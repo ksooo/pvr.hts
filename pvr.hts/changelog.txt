@@ -1,3 +1,7 @@
+v22.5.0
+- PVR Add-on API v9.2.0
+- Add support for multiple recorded streams at a time (enables for example thumbnail extraction)
+
 v22.4.2
 - Fix pointless "Not all properties handled" log spam introduced with v22.4.1
 
